@@ -2,7 +2,7 @@
 //  TDDTicTacToe2Tests.swift
 //  TDDTicTacToe2Tests
 //
-//  Created by James Michalski on 1/4/23.
+//  Created by Brent Michalski on 1/4/23.
 //
 
 import XCTest

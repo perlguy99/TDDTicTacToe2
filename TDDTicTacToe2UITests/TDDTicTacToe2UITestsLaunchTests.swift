@@ -2,7 +2,7 @@
 //  TDDTicTacToe2UITestsLaunchTests.swift
 //  TDDTicTacToe2UITests
 //
-//  Created by James Michalski on 1/4/23.
+//  Created by Brent Michalski on 1/4/23.
 //
 
 import XCTest
