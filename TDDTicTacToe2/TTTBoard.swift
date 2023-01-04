@@ -15,22 +15,24 @@ struct TTTBoard: View {
         VStack {
             Text("It's \(viewModel.turn.text)'s Turn")
             
-            HStack {
-                TTTBox(viewModel: viewModel.gameBoard[0])
-                TTTBox(viewModel: viewModel.gameBoard[1])
-                TTTBox(viewModel: viewModel.gameBoard[2])
-            }
-
-            HStack {
-                TTTBox(viewModel: viewModel.gameBoard[3])
-                TTTBox(viewModel: viewModel.gameBoard[4])
-                TTTBox(viewModel: viewModel.gameBoard[5])
-            }
-
-            HStack {
-                TTTBox(viewModel: viewModel.gameBoard[6])
-                TTTBox(viewModel: viewModel.gameBoard[7])
-                TTTBox(viewModel: viewModel.gameBoard[8])
+            if let gameBoard = viewModel.gameBoard {
+                HStack {
+                    TTTBox(viewModel: gameBoard[0])
+                    TTTBox(viewModel: gameBoard[1])
+                    TTTBox(viewModel: gameBoard[2])
+                }
+                
+                HStack {
+                    TTTBox(viewModel: gameBoard[3])
+                    TTTBox(viewModel: gameBoard[4])
+                    TTTBox(viewModel: gameBoard[5])
+                }
+                
+                HStack {
+                    TTTBox(viewModel: gameBoard[6])
+                    TTTBox(viewModel: gameBoard[7])
+                    TTTBox(viewModel: gameBoard[8])
+                }
             }
 
         }
