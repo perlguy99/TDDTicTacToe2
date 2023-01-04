@@ -11,8 +11,7 @@ extension TTTBoard {
     
     class ViewModel: ObservableObject {
         @Published var turn: TDDTicTacToe2App.Turn = .x
-        
-        var gameBoard: [TTTBox.ViewModel]?
+        @Published var gameBoard: [TTTBox.ViewModel]?
 
         init(turn: TDDTicTacToe2App.Turn = .x, gameBoard: [TTTBox.ViewModel]? = nil) {
             self.turn = turn
@@ -27,17 +26,22 @@ extension TTTBoard {
             turn = (turn == .x ? .o : .x)
         }
 
+        func resetGameBoard() {
+            gameBoard = createGameBoard()
+            turn = .x
+        }
+        
         func createGameBoard() -> [TTTBox.ViewModel] {
             return [
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
-                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
+                TTTBox.ViewModel(value: .empty, turnUpdateDelegate: self),
             ]
         }
     }
@@ -57,3 +61,4 @@ extension TTTBoard.ViewModel: TurnUpdatable {
         boxTapped()
     }
 }
+

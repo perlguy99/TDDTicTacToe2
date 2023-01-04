@@ -27,29 +27,29 @@ extension TTTBox {
         }
         
         func boxTapped() {
-            switch turn {
-                case .x:
-                    value = .x
-                case .o:
-                    value = .o
-                case .none:
-                    value = .x
-            }
-            
-            if let turnUpdateDelegate = turnUpdateDelegate {
-                turnUpdateDelegate.updateTurn()
+            if value == .empty {
+                switch turn {
+                    case .x:
+                        value = .x
+                    default:
+                        value = .o
+                }
+                
+                if let turnUpdateDelegate = turnUpdateDelegate {
+                    turnUpdateDelegate.updateTurn()
+                }
             }
         }
-        
     }
     
     enum State: String {
-        case empty = "-"
+        case empty = "" // Must be same as tttEmptyString
         case x = "X"
         case o = "O"
     }
 }
 
+let tttEmptyString = ""
 
 // Started with this, then refactoring
 //class ViewModel {
@@ -63,4 +63,13 @@ extension TTTBox {
 //        }
 //    }
 //}
+
+extension TTTBox.ViewModel: Equatable {
+    static func == (lhs: TTTBox.ViewModel, rhs: TTTBox.ViewModel) -> Bool {
+        lhs.value == rhs.value
+    }
+    
+    
+}
+
 

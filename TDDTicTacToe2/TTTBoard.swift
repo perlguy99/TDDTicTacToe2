@@ -13,8 +13,10 @@ struct TTTBoard: View {
     var body: some View {
     
         VStack {
-            Text("It's \(viewModel.turn.text)'s Turn")
+            Spacer()
             
+            Text("It's \(viewModel.turn.text)'s Turn")
+
             if let gameBoard = viewModel.gameBoard {
                 HStack {
                     TTTBox(viewModel: gameBoard[0])
@@ -33,6 +35,11 @@ struct TTTBoard: View {
                     TTTBox(viewModel: gameBoard[7])
                     TTTBox(viewModel: gameBoard[8])
                 }
+            }
+            
+            Spacer()
+            Button("Reset Board") {
+                viewModel.resetGameBoard()
             }
 
         }

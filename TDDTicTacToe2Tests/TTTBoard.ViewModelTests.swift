@@ -6,7 +6,11 @@
 //
 
 import XCTest
+import Combine
+//import ViewInspector
 @testable import TDDTicTacToe2
+
+extension TTTBoard.ViewModel: AutomaticallyEquatable { }
 
 final class TTTBoardViewModelTests: XCTestCase {
 
@@ -85,4 +89,111 @@ final class TTTBoardViewModelTests: XCTestCase {
     /// Need to fix this...
     /// 
     
+    // TDD 15
+    // There is no way to reset the game once all of the boxes have a value
+    func testResetBoardToAllEmpty() throws {
+        let boardViewModel = TTTBoard.ViewModel()
+        boardViewModel.gameBoard = boardViewModel.createGameBoard()
+
+        boardViewModel.gameBoard?[0].boxTapped()
+        XCTAssertEqual(boardViewModel.gameBoard?[0].value, .x)
+
+        boardViewModel.gameBoard?[1].boxTapped()
+        XCTAssertEqual(boardViewModel.gameBoard?[1].value, .o)
+
+        // Reset the board
+        boardViewModel.resetGameBoard()
+        XCTAssertEqual(boardViewModel.gameBoard?[0].value, .empty)
+        XCTAssertEqual(boardViewModel.gameBoard?[1].value, .empty)
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    // TDD 16
+    // So, test 15 above proves that everything seems to work in the ViewModels
+    // But the BoardView is NOT getting updated right now, so I am going to attempt to
+    // check it's published values
+    func testViewModelPublishers() throws {
+//        let expectation1 = XCTestExpectation(description: "Expectation 1")
+//        let expectation2 = XCTestExpectation(description: "Expectation 2")
+//        let expectation3 = XCTestExpectation(description: "Expectation 3")
+//
+//        let boardViewModel = TTTBoard.ViewModel()
+        
+//        let publisher = boardViewModel.$gameBoard
+//
+//        /// This error kinda sucks
+//        ///Cannot convert value of type '[TTTBox.ViewModel].Type' to expected argument type '(Published<[TTTBox.ViewModel]?>.Publisher.Output) -> Void' (aka '(Optional<Array<TTTBox.ViewModel>>) -> ()')
+//
+//        publisher.expect([TTTBox.ViewModel])
+//            .waitForExpectations(timeout: 1)
+        
+//        Task {
+//            try await Task.sleep(nanoseconds: 500000)
+//            boardViewModel.$gameBoard
+//                .sink { ttboxViewModel in
+//                    XCTAssertEqual(ttboxViewModel?[0].value, .empty)
+//                    expectation1.fulfill()
+//                }
+//                .store(in: &cancellables)
+//        }
+//
+//        wait(for: [expectation1], timeout: 1)
+//
+//        Task {
+//            try await Task.sleep(nanoseconds: 1_000_500_000)
+//            boardViewModel.gameBoard?[0].boxTapped()
+//        }
+//
+//        Task {
+//            try await Task.sleep(nanoseconds: 3_000_000_000)
+//            boardViewModel.gameBoard?[0].boxTapped()
+//
+//            boardViewModel.$gameBoard
+//                .sink { ttboxViewModel in
+//                    XCTAssertEqual(ttboxViewModel?[0].value, .x)
+//                    expectation2.fulfill()
+//                }
+//                .store(in: &cancellables)
+//        }
+//
+//        wait(for: [expectation2], timeout: 5)
+//
+//        Task {
+//            try await Task.sleep(nanoseconds: 4_000_500_000)
+//            boardViewModel.resetGameBoard()
+//        }
+//
+//        Task {
+//            try await Task.sleep(nanoseconds: 6_000_000_000)
+//
+//            boardViewModel.$gameBoard
+//                .sink { ttboxViewModel in
+//                    XCTAssertEqual(ttboxViewModel?[0].value, .empty)
+//                    expectation3.fulfill()
+//                }
+//                .store(in: &cancellables)
+//        }
+//
+//        wait(for: [expectation3], timeout: 10)
+        
+        
+        
+    }
+    
+    
+    
+    // TDD 17
+    // Well, testing @StateObjects is kind of a pain
+    // Going to try a different approach for a minute
+    // Going to load ViewInspector and see how it works for this...
+//    func testViewSideEffects() throws {
+//        let sut = TTTBoard(viewModel: .init())
+//
+//        try sut.inspect().findall(TTTBox.self)
+//
+//        print("\n-------------------------------------")
+//        print(sut)
+//        print("-------------------------------------\n")
+//    }
 }

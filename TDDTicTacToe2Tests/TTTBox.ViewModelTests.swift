@@ -8,6 +8,8 @@
 import XCTest
 @testable import TDDTicTacToe2
 
+extension TTTBox.ViewModel: AutomaticallyEquatable { }
+
 final class TTTBoxViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -116,7 +118,6 @@ final class TTTBoxViewModelTests: XCTestCase {
         
         // Ensure that it is O's turn
         boardViewModel.turn = .o
-//        viewModel.turn = .o
         XCTAssertEqual(viewModel.turn, .o)
 
         // Tap the box
@@ -148,6 +149,46 @@ final class TTTBoxViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.value, .x)
         XCTAssertEqual(boardViewModel.turn, .o)
     }
+    
+    // TDD 14
+    // The value changes between X and O, but if a Box contains a value, it should no
+    // longer be able to be changed...
+    func testThatValueAndTurnDoNotChangeWhenTappingOnABoxContainingXorO() throws {
+        let boardViewModel = TTTBoard.ViewModel(turn: .x)
+        let viewModel = TTTBox.ViewModel()
+        viewModel.turnUpdateDelegate = boardViewModel
 
+        // Assert that the value is .empty
+        XCTAssertEqual(viewModel.value, .empty)
+        
+        // Ensure that it is X's turn
+        boardViewModel.turn = .x
+        XCTAssertEqual(boardViewModel.turn, .x)
+
+        // Tap the box
+        viewModel.boxTapped()
+
+        // Assert that the value is .x
+        XCTAssertEqual(viewModel.value, .x)
+        XCTAssertEqual(boardViewModel.turn, .o)
+
+        // Tap the box again
+        viewModel.boxTapped()
+
+        // Now, try an tap again and verify that the value doesn't change
+        // Nor should the turn change
+        XCTAssertEqual(viewModel.value, .x)
+        XCTAssertEqual(boardViewModel.turn, .o)
+        
+        // Tap the box again
+        viewModel.boxTapped()
+
+        // Now, try an tap again and verify that the value doesn't change
+        // Nor should the turn change
+        XCTAssertEqual(viewModel.value, .x)
+        XCTAssertEqual(boardViewModel.turn, .o)
+    }
+    
 
 }
+
