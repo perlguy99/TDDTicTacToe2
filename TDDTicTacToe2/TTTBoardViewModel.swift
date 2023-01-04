@@ -14,26 +14,37 @@ extension TTTBoard {
         
         var gameBoard: [TTTBox.ViewModel]?
 
+        init(turn: TDDTicTacToe2App.Turn = .x, gameBoard: [TTTBox.ViewModel]? = nil) {
+            self.turn = turn
+            self.gameBoard = gameBoard
+        }
+        
         func boxTapped() {
-            print("\n-------------------------------------")
-            print("TTTBoard.ViewModel.boxTapped()")
-            print("-------------------------------------\n")
             turn = (turn == .x ? .o : .x)
         }
-    
-        static func createGameBoard() -> [TTTBox.ViewModel] {
+
+        func createGameBoard() -> [TTTBox.ViewModel] {
             return [
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
-                TTTBox.ViewModel(),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
+                TTTBox.ViewModel(turnUpdateDelegate: self),
             ]
         }
     }
 }
 
+protocol TurnUpdatable {
+    func updateTurn()
+}
+
+extension TTTBoard.ViewModel: TurnUpdatable {
+    func updateTurn() {
+        boxTapped()
+    }
+}

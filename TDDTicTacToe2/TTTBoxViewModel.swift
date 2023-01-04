@@ -13,10 +13,15 @@ extension TTTBox {
     class ViewModel: ObservableObject {
         @Published var value: TTTBox.State = .empty
         @Published var turn: TDDTicTacToe2App.Turn = .x
+        var turnUpdateDelegate: TurnUpdatable?
         
-        init(value: TTTBox.State = .empty, turn: TDDTicTacToe2App.Turn = .x) {
+        init(value: TTTBox.State = .empty, turn: TDDTicTacToe2App.Turn = .x, turnUpdateDelegate: TurnUpdatable? = nil) {
             self.value = value
             self.turn = turn
+            
+            if let turnUpdateDelegate = turnUpdateDelegate {
+                self.turnUpdateDelegate = turnUpdateDelegate
+            }
         }
         
         func boxTapped() {
@@ -26,7 +31,12 @@ extension TTTBox {
                 case .o:
                     value = .o
             }
+            
+            if let turnUpdateDelegate = turnUpdateDelegate {
+                turnUpdateDelegate.updateTurn()
+            }
         }
+        
     }
     
     enum State: String {

@@ -13,7 +13,7 @@ final class TTTBoardViewModelTests: XCTestCase {
     // TDD 8
     func testBoardContainsNineBoxes() throws {
         let boardViewModel = TTTBoard.ViewModel()
-        boardViewModel.gameBoard = TTTBoard.ViewModel.createGameBoard()
+        boardViewModel.gameBoard = boardViewModel.createGameBoard()
         XCTAssertEqual(boardViewModel.gameBoard?.count, 9)
     }
     
@@ -41,7 +41,7 @@ final class TTTBoardViewModelTests: XCTestCase {
     // TDD 11 - Getting kinda at a place where I feel I need to go in many directions,
     // trying to reign it all in.
     func testCreateGameBoardMethodReturnsNineBoxes() throws {
-        let foo = TTTBoard.ViewModel.createGameBoard()
+        let foo = TTTBoard.ViewModel().createGameBoard()
         XCTAssertEqual(foo.count, 9)
     }
     
@@ -50,7 +50,7 @@ final class TTTBoardViewModelTests: XCTestCase {
     // This is where my brain wanted to go next...
     func testTapBoxButtonUpdatesTurn_And_UpdatesBoxValue() throws {
         let boardViewModel = TTTBoard.ViewModel()
-        boardViewModel.gameBoard = TTTBoard.ViewModel.createGameBoard()
+        boardViewModel.gameBoard = boardViewModel.createGameBoard()
         
         XCTAssertEqual(boardViewModel.turn, TDDTicTacToe2App.Turn.x)
         
