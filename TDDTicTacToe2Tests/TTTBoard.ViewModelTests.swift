@@ -75,4 +75,14 @@ final class TTTBoardViewModelTests: XCTestCase {
     // So, the current test failure is that when a box is tapped, the board doesn't change the turn
     //
 
+    // TDD 13
+    /// Now, when running the app, when you tap on a box, the text for current user does not get updated.
+    /// For this one, we need to make some Combine/SwiftUI changes in the View (`TTTBoard.swift`) and
+    /// ViewModel (`TTTBoardViewModel.swift`)
+    /// Heading there now...
+    /// Changing `var viewModel: ViewModel` to `@StateObject var viewModel: ViewModel`
+    /// Causes this error: `Generic struct 'StateObject' requires that 'TTTBoard.ViewModel' conform to 'ObservableObject'`
+    /// Need to fix this...
+    /// 
+    
 }

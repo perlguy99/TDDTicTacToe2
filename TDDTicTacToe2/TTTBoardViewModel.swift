@@ -9,14 +9,18 @@ import Foundation
 
 extension TTTBoard {
     
-    class ViewModel {
-        var turn: TDDTicTacToe2App.Turn = .x
+    class ViewModel: ObservableObject {
+        @Published var turn: TDDTicTacToe2App.Turn = .x
         
         var gameBoard: [TTTBox.ViewModel]?
 
         init(turn: TDDTicTacToe2App.Turn = .x, gameBoard: [TTTBox.ViewModel]? = nil) {
             self.turn = turn
             self.gameBoard = gameBoard
+            
+            if self.gameBoard == nil {
+                self.gameBoard = createGameBoard()
+            }
         }
         
         func boxTapped() {
@@ -40,10 +44,15 @@ extension TTTBoard {
 }
 
 protocol TurnUpdatable {
+    var currentTurn: TDDTicTacToe2App.Turn { get }
     func updateTurn()
 }
 
 extension TTTBoard.ViewModel: TurnUpdatable {
+    var currentTurn: TDDTicTacToe2App.Turn {
+        return turn
+    }
+    
     func updateTurn() {
         boxTapped()
     }

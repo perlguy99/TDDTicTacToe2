@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TTTBoard: View {
-    var viewModel: ViewModel
+    @StateObject var viewModel: ViewModel
     
     var body: some View {
     

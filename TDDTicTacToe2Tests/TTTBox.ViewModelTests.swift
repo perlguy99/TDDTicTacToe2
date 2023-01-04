@@ -88,13 +88,15 @@ final class TTTBoxViewModelTests: XCTestCase {
     
     // TDD 6
     func testThatBoxChangesToX_WhenXsTurn() throws {
+        let boardViewModel = TTTBoard.ViewModel(turn: .x)
         let viewModel = TTTBox.ViewModel()
+        viewModel.turnUpdateDelegate = boardViewModel
 
         // Assert that the value is .empty
         XCTAssertEqual(viewModel.value, .empty)
         
         // Ensure that it is X's turn
-        XCTAssertEqual(viewModel.turn, .x)
+        XCTAssertEqual(boardViewModel.turn, .x)
 
         // Tap the box
         viewModel.boxTapped()
@@ -105,13 +107,16 @@ final class TTTBoxViewModelTests: XCTestCase {
     
     // TDD 7
     func testThatBoxChangesToO_WhenOsTurn() throws {
+        let boardViewModel = TTTBoard.ViewModel(turn: .x)
         let viewModel = TTTBox.ViewModel()
+        viewModel.turnUpdateDelegate = boardViewModel
 
         // Assert that the value is .empty
         XCTAssertEqual(viewModel.value, .empty)
         
         // Ensure that it is O's turn
-        viewModel.turn = .o
+        boardViewModel.turn = .o
+//        viewModel.turn = .o
         XCTAssertEqual(viewModel.turn, .o)
 
         // Tap the box
@@ -121,6 +126,28 @@ final class TTTBoxViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.value, .o)
     }
 
+
+    // TDD 13.5ish
+    // Need to make Box not track "Turn" anymore and to get it from "Board"
+    func testThatBoxChangesToX_WhenBoardSaysItIsXsTurn() throws {
+        let boardViewModel = TTTBoard.ViewModel(turn: .x)
+        let viewModel = TTTBox.ViewModel()
+        viewModel.turnUpdateDelegate = boardViewModel
+
+        // Assert that the value is .empty
+        XCTAssertEqual(viewModel.value, .empty)
+        
+        // Ensure that it is X's turn
+        boardViewModel.turn = .x
+        XCTAssertEqual(boardViewModel.turn, .x)
+
+        // Tap the box
+        viewModel.boxTapped()
+
+        // Assert that the value is .x
+        XCTAssertEqual(viewModel.value, .x)
+        XCTAssertEqual(boardViewModel.turn, .o)
+    }
 
 
 }

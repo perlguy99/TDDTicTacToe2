@@ -12,12 +12,14 @@ extension TTTBox {
     
     class ViewModel: ObservableObject {
         @Published var value: TTTBox.State = .empty
-        @Published var turn: TDDTicTacToe2App.Turn = .x
         var turnUpdateDelegate: TurnUpdatable?
         
-        init(value: TTTBox.State = .empty, turn: TDDTicTacToe2App.Turn = .x, turnUpdateDelegate: TurnUpdatable? = nil) {
+        var turn: TDDTicTacToe2App.Turn? {
+            return turnUpdateDelegate?.currentTurn
+        }
+        
+        init(value: TTTBox.State = .empty, turnUpdateDelegate: TurnUpdatable? = nil) {
             self.value = value
-            self.turn = turn
             
             if let turnUpdateDelegate = turnUpdateDelegate {
                 self.turnUpdateDelegate = turnUpdateDelegate
@@ -30,6 +32,8 @@ extension TTTBox {
                     value = .x
                 case .o:
                     value = .o
+                case .none:
+                    value = .x
             }
             
             if let turnUpdateDelegate = turnUpdateDelegate {
@@ -44,12 +48,6 @@ extension TTTBox {
         case x = "X"
         case o = "O"
     }
-    
-//    enum Turn {
-//        case x
-//        case o
-//    }
-    
 }
 
 
