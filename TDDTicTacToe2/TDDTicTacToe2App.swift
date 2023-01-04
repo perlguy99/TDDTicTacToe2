@@ -11,7 +11,8 @@ import SwiftUI
 struct TDDTicTacToe2App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            TTTBoard(viewModel: .init())
         }
     }
 }
