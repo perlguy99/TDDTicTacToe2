@@ -18,3 +18,20 @@ struct TDDTicTacToe2App: App {
 }
 
 let tttEmptyString = "-"
+
+extension TDDTicTacToe2App {
+    
+    enum Turn {
+        case x
+        case o
+        
+        var text: String {
+            switch self {
+                case .x:
+                    return "X"
+                case .o:
+                    return "O"
+            }
+        }
+    }
+}

@@ -7,22 +7,6 @@
 
 import Foundation
 
-extension TDDTicTacToe2App {
-    enum Turn {
-        case x
-        case o
-        
-        var text: String {
-            switch self {
-                case .x:
-                    return "X"
-                case .o:
-                    return "O"
-            }
-        }
-    }
-}
-
 extension TTTBoard {
     
     class ViewModel {
@@ -39,6 +23,10 @@ extension TTTBoard {
             TTTBox.ViewModel(),
             TTTBox.ViewModel(),
         ]
+        
+        func boxTapped() {
+            turn = (turn == .x ? .o : .x)
+        }
     
         
     }

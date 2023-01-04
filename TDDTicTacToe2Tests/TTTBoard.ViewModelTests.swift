@@ -27,8 +27,22 @@ final class TTTBoardViewModelTests: XCTestCase {
         let boardViewModel = TTTBoard.ViewModel()
         XCTAssertEqual(boardViewModel.turn, TDDTicTacToe2App.Turn.x)
         
-        boardViewModel.gameBoard[0].boxTapped()
+        boardViewModel.boxTapped()
         XCTAssertEqual(boardViewModel.turn, TDDTicTacToe2App.Turn.o)
+        
+        boardViewModel.boxTapped()
+        XCTAssertEqual(boardViewModel.turn, TDDTicTacToe2App.Turn.x)
+        
+        boardViewModel.boxTapped()
+        XCTAssertEqual(boardViewModel.turn, TDDTicTacToe2App.Turn.o)
+    }
+    
+    // TDD 11 - Getting kinda at a place where I feel I need to go in many directions,
+    // trying to reign it all in.
+    func testCreateGameBoardMethodReturnsNineBoxes() throws {
+        let boardViewModel = TTTBoard.ViewModel()
+//        let foo = boardViewModel.createGameBoard()
+//        XCTAssertEqual(foo.count, 9)
     }
 
 }
