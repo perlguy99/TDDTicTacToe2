@@ -35,39 +35,55 @@ extension TTTBoard {
         }
         
         func isWinner(board: [TTTBox.ViewModel]) -> String {
+
             func isThreeInARowHorizontal(board: [TTTBox.ViewModel]) -> String {
-                if board[0].value == .x && board[1].value == .x && board[2].value == .x { return "X" }
-                if board[0].value == .o && board[1].value == .o && board[2].value == .o { return "O" }
-                
-                if board[3].value == .x && board[4].value == .x && board[5].value == .x { return "X" }
-                if board[3].value == .o && board[4].value == .o && board[5].value == .o { return "O" }
-                
-                if board[6].value == .x && board[7].value == .x && board[8].value == .x { return "X" }
-                if board[6].value == .o && board[7].value == .o && board[8].value == .o { return "O" }
-                
+                if checkHorizontal(board: board, forState: .x) == "X" {
+                    return "X"
+                }
+                if checkHorizontal(board: board, forState: .o) == "O" {
+                    return "O"
+                }
                 return ""
             }
 
             func isThreeInARowVertical(board: [TTTBox.ViewModel]) -> String {
-                if board[0].value == .x && board[3].value == .x && board[6].value == .x { return "X" }
-                if board[0].value == .o && board[3].value == .o && board[6].value == .o { return "O" }
-                
-                if board[1].value == .x && board[4].value == .x && board[7].value == .x { return "X" }
-                if board[1].value == .o && board[4].value == .o && board[7].value == .o { return "O" }
-                
-                if board[2].value == .x && board[5].value == .x && board[8].value == .x { return "X" }
-                if board[2].value == .o && board[5].value == .o && board[8].value == .o { return "O" }
-                
+                if checkVertical(board: board, forState: .x) == "X" {
+                    return "X"
+                }
+                if checkVertical(board: board, forState: .o) == "O" {
+                    return "O"
+                }
                 return ""
             }
             
             func isThreeInARowDiagonal(board: [TTTBox.ViewModel]) -> String {
-                if board[0].value == .x && board[4].value == .x && board[8].value == .x { return "X" }
-                if board[0].value == .o && board[4].value == .o && board[8].value == .o { return "O" }
+                if checkDiagonal(board: board, forState: .x) == "X" {
+                    return "X"
+                }
+                if checkDiagonal(board: board, forState: .o) == "O" {
+                    return "O"
+                }
+                return ""
+            }
 
-                if board[2].value == .x && board[4].value == .x && board[6].value == .x { return "X" }
-                if board[2].value == .o && board[4].value == .o && board[6].value == .o { return "O" }
+            // 0, 1, 2  ..  3, 4, 5  ..  6, 7, 8
+            func checkHorizontal(board: [TTTBox.ViewModel], forState state: TTTBox.State) -> String {
+                if board[0].value == state && board[1].value == state && board[2].value == state { return state.rawValue }
+                if board[3].value == state && board[4].value == state && board[5].value == state { return state.rawValue }
+                if board[6].value == state && board[7].value == state && board[8].value == state { return state.rawValue }
+                return ""
+            }
 
+            func checkVertical(board: [TTTBox.ViewModel], forState state: TTTBox.State) -> String {
+                if board[0].value == state && board[3].value == state && board[6].value == state { return state.rawValue }
+                if board[1].value == state && board[4].value == state && board[7].value == state { return state.rawValue }
+                if board[2].value == state && board[5].value == state && board[8].value == state { return state.rawValue }
+                return ""
+            }
+
+            func checkDiagonal(board: [TTTBox.ViewModel], forState state: TTTBox.State) -> String {
+                if board[0].value == state && board[4].value == state && board[8].value == state { return state.rawValue }
+                if board[2].value == state && board[4].value == state && board[6].value == state { return state.rawValue }
                 return ""
             }
             
@@ -76,7 +92,7 @@ extension TTTBoard {
             } else if isThreeInARowHorizontal(board: board) == "O" {
                 return "O"
             }
-                
+
             if isThreeInARowVertical(board: board) == "X" {
                 return "X"
             } else if isThreeInARowVertical(board: board) == "O" {
@@ -123,3 +139,64 @@ extension TTTBoard.ViewModel: TurnUpdatable {
     }
 }
 
+
+
+
+// For enjoyment only... The original version of 'isWinner'
+//func isWinner(board: [TTTBox.ViewModel]) -> String {
+//    func isThreeInARowHorizontal(board: [TTTBox.ViewModel]) -> String {
+//        if board[0].value == .x && board[1].value == .x && board[2].value == .x { return "X" }
+//        if board[0].value == .o && board[1].value == .o && board[2].value == .o { return "O" }
+//
+//        if board[3].value == .x && board[4].value == .x && board[5].value == .x { return "X" }
+//        if board[3].value == .o && board[4].value == .o && board[5].value == .o { return "O" }
+//
+//        if board[6].value == .x && board[7].value == .x && board[8].value == .x { return "X" }
+//        if board[6].value == .o && board[7].value == .o && board[8].value == .o { return "O" }
+//
+//        return ""
+//    }
+//
+//    func isThreeInARowVertical(board: [TTTBox.ViewModel]) -> String {
+//        if board[0].value == .x && board[3].value == .x && board[6].value == .x { return "X" }
+//        if board[0].value == .o && board[3].value == .o && board[6].value == .o { return "O" }
+//
+//        if board[1].value == .x && board[4].value == .x && board[7].value == .x { return "X" }
+//        if board[1].value == .o && board[4].value == .o && board[7].value == .o { return "O" }
+//
+//        if board[2].value == .x && board[5].value == .x && board[8].value == .x { return "X" }
+//        if board[2].value == .o && board[5].value == .o && board[8].value == .o { return "O" }
+//
+//        return ""
+//    }
+//
+//    func isThreeInARowDiagonal(board: [TTTBox.ViewModel]) -> String {
+//        if board[0].value == .x && board[4].value == .x && board[8].value == .x { return "X" }
+//        if board[0].value == .o && board[4].value == .o && board[8].value == .o { return "O" }
+//
+//        if board[2].value == .x && board[4].value == .x && board[6].value == .x { return "X" }
+//        if board[2].value == .o && board[4].value == .o && board[6].value == .o { return "O" }
+//
+//        return ""
+//    }
+//
+//    if isThreeInARowHorizontal(board: board) == "X" {
+//        return "X"
+//    } else if isThreeInARowHorizontal(board: board) == "O" {
+//        return "O"
+//    }
+//
+//    if isThreeInARowVertical(board: board) == "X" {
+//        return "X"
+//    } else if isThreeInARowVertical(board: board) == "O" {
+//        return "O"
+//    }
+//
+//    if isThreeInARowDiagonal(board: board) == "X" {
+//        return "X"
+//    } else if isThreeInARowDiagonal(board: board) == "O" {
+//        return "O"
+//    }
+//
+//    return ""
+//}

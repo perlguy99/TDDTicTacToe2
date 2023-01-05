@@ -328,9 +328,13 @@ final class TTTBoardViewModelTests: XCTestCase {
     }
     
     func testIsWinner_WinningCombo_O_Horizontal_Expect_True() throws {
-        let tttBoardView = TTTBoard(viewModel: .init())
-        
         let board = createGameBoard(state0: .o, state1: .o, state2: .o)
+        
+//        let vm = TTTBoard.ViewModel(turn: <#T##TDDTicTacToe2App.Turn#>, gameBoard: <#T##[TTTBox.ViewModel]?#>)
+        let tttBoardView = TTTBoard(viewModel: .init(gameBoard: board))
+        
+//        let board = createGameBoard(state0: .o, state1: .o, state2: .o)
+//        tttBoardView.viewModel.gameBoard = board
         XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "O")
     }
 

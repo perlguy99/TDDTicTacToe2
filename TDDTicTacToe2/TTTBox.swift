@@ -20,7 +20,6 @@ struct TTTBox: View {
                 .font(.system(size: 72))
         }
         .onTapGesture {
-            print("tap")
             viewModel.boxTapped()
         }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) } // 2 of 2 for ViewInspector
