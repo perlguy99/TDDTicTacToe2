@@ -7,10 +7,12 @@
 
 import XCTest
 import Combine
-//import ViewInspector
+import ViewInspector
+import SwiftUI
 @testable import TDDTicTacToe2
 
 extension TTTBoard.ViewModel: AutomaticallyEquatable { }
+
 
 final class TTTBoardViewModelTests: XCTestCase {
 
@@ -187,6 +189,16 @@ final class TTTBoardViewModelTests: XCTestCase {
     // Well, testing @StateObjects is kind of a pain
     // Going to try a different approach for a minute
     // Going to load ViewInspector and see how it works for this...
+    
+    /// TDD 17.5
+    /// So, what I am experiencing here is that the ViewModels appear to be working properly
+    /// however, the values are not updating properly when using them in SwiftUI
+    /// So... We need to test that these are being properly broadcast and updated when
+    /// using them in SwiftUI.
+    /// Step 1: Try to set things up using ViewInspector
+    ///
+
+       // Go to TDD 18 instead of here.
 //    func testViewSideEffects() throws {
 //        let sut = TTTBoard(viewModel: .init())
 //
@@ -196,4 +208,180 @@ final class TTTBoardViewModelTests: XCTestCase {
 //        print(sut)
 //        print("-------------------------------------\n")
 //    }
+    
+    /// TDD 18
+    /// Going to try to use the ViewInspector examples to try these tests...
+    ///
+
+    // So, these just interact with the ViewModel
+    func testViewSideEffects_RenameMe() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+
+        let expectation = tttBoardView.inspection.inspect { view in
+            
+            XCTAssertEqual(try view.actualView().viewModel.gameBoard?[0].value, .empty)
+            try view.actualView().viewModel.gameBoard?[0].boxTapped()
+            XCTAssertEqual(try view.actualView().viewModel.gameBoard?[0].value, .x)
+            
+            // Try to reset the board
+            try view.actualView().viewModel.resetGameBoard()
+            XCTAssertEqual(try view.actualView().viewModel.gameBoard?[0].value, .empty)
+        }
+        
+        ViewHosting.host(view: tttBoardView)
+        wait(for: [expectation], timeout: 0.5)
+    }
+    
+    // Lets try to just use the View stuff
+    /// TDD 19
+    /// ViewInspector is not cooperating, moving through a Kodeco ViewInspector tutorial...
+    ///
+//    func testViewSideEffects_UsingViewObjects() throws {
+//        let tttBoardView = TTTBoard(viewModel: .init())
+//
+//        let expectation = tttBoardView.inspection.inspect { view in
+//
+//            // Check the first item on the board
+//            let foo = view.findAll(TTTBox.self)
+//            print("\n-------------------------------------")
+//            print(try foo[0].actualView().viewModel.value.rawValue)
+////            try foo[0].callOnTapGesture()
+//            print("- tap -")
+//            print(try foo[0].actualView().viewModel.value.rawValue)
+//            print("-------------------------------------\n")
+//            XCTAssertEqual(try view.actualView().viewModel.gameBoard?[0].value, .empty)
+//
+//            // Tap the first item
+//            try view.actualView().viewModel.gameBoard?[0].boxTapped()
+//
+//            // Check that the value is now .x
+//            XCTAssertEqual(try view.actualView().viewModel.gameBoard?[0].value, .x)
+//
+//            // Reset the board
+//            try view.find(button: "Reset Board").tap()
+//
+//            // Now verify that the first item is empty again
+//            XCTAssertEqual(try view.actualView().viewModel.gameBoard?[0].value, .empty)
+//        }
+//
+//        ViewHosting.host(view: tttBoardView)
+//        wait(for: [expectation], timeout: 0.5)
+//    }
+
+    // TDD 20
+    // This is kind of a conundrum... I need to find a way to make sure that the views are getting updated.
+    //
+    // Played around with the code a little more and found a way to make this part work!
+    
+    // TDD 18.25
+    func testViewInspectorTestButtonTogglesFlag() throws {
+        let sut = ViewInspectorTest()
+        let exp = sut.inspection.inspect { view in
+            XCTAssertFalse(try view.actualView().flag)
+            try view.button().tap()
+            XCTAssertTrue(try view.actualView().flag)
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.2)
+    }
+    
+    // TDD 21
+    // We now need a way to determine if someone won the game...
+    // To do so, we'll need to setup some known layouts to test against
+    func createGameBoard(
+        state0: TTTBox.State = .empty,
+        state1: TTTBox.State = .empty,
+        state2: TTTBox.State = .empty,
+        state3: TTTBox.State = .empty,
+        state4: TTTBox.State = .empty,
+        state5: TTTBox.State = .empty,
+        state6: TTTBox.State = .empty,
+        state7: TTTBox.State = .empty,
+        state8: TTTBox.State = .empty
+    ) -> [TTTBox.ViewModel] {
+        let tttBoard = TTTBoard.ViewModel()
+        return [
+            TTTBox.ViewModel(value: state0, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state1, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state2, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state3, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state4, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state5, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state6, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state7, turnUpdateDelegate: tttBoard),
+            TTTBox.ViewModel(value: state8, turnUpdateDelegate: tttBoard)
+        ]
+    }
+    
+    func testIsWinner_WinningCombo_X_Horizontal_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state0: .x, state1: .x, state2: .x)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "X")
+    }
+
+    func testIsWinner_No_WinningCombo_Expect_False() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state0: .x, state1: .x)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "")
+    }
+    
+    func testIsWinner_WinningCombo_O_Horizontal_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state0: .o, state1: .o, state2: .o)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "O")
+    }
+
+    func testIsWinner_WinningCombo_X_Vertical_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state1: .x, state4: .x, state7: .x)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "X")
+    }
+
+    func testIsWinner_WinningCombo_O_Vertical_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state1: .o, state4: .o, state7: .o)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "O")
+    }
+
+    func testIsWinner_WinningCombo_X_Diagonal1_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state0: .x, state4: .x, state8: .x)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "X")
+    }
+
+    func testIsWinner_WinningCombo_X_Diagonal2_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state2: .x, state4: .x, state6: .x)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "X")
+    }
+
+    func testIsWinner_WinningCombo_O_Diagonal1_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state0: .o, state4: .o, state8: .o)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "O")
+    }
+
+    func testIsWinner_WinningCombo_O_Diagonal2_Expect_True() throws {
+        let tttBoardView = TTTBoard(viewModel: .init())
+        
+        let board = createGameBoard(state2: .o, state4: .o, state6: .o)
+        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "O")
+    }
+
+    // TDD 22
+    // Ok, got a BUNCH of tests to see who won.
+    // The code to do the checking is terrible, but it made the tests pass
+    // Now, to refactor - and keep all checks passing!
+    
+
+    
+
 }

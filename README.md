@@ -30,9 +30,12 @@
     
 <!--    - Displays who's turn it currently is-->
     
+    - Board can be reset
+        - Working with ViewInspector to try and inspect the Views during their lifetime
+        
     - If there are 3 in-a-row of either "X" or "O", they win
     
-    - Board can be reset
+    
     
     
     

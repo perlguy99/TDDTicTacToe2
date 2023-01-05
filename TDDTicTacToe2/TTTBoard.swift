@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TTTBoard: View {
+    internal let inspection = Inspection<Self>() // 1 of 2 for ViewInspector
     @StateObject var viewModel: ViewModel
     
     var body: some View {
@@ -41,10 +42,10 @@ struct TTTBoard: View {
             Button("Reset Board") {
                 viewModel.resetGameBoard()
             }
+            .accessibilityIdentifier("ResetBoardButton")
 
         }
-        
-        
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) } // 2 of 2 for ViewInspector
     }
 }
 
