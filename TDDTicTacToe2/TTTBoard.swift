@@ -46,6 +46,16 @@ struct TTTBoard: View {
 
         }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) } // 2 of 2 for ViewInspector
+        .alert(item: $viewModel.alertToShow) { alertViewModel in
+            Alert(
+                title: Text(alertViewModel.title),
+                message: Text(alertViewModel.message),
+                dismissButton: .default(
+                    Text(alertViewModel.buttonText),
+                    action: alertViewModel.buttonAction
+                )
+            )
+        }
     }
 }
 

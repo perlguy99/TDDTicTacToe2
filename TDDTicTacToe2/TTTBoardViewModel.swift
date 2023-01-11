@@ -13,7 +13,8 @@ extension TTTBoard {
     class ViewModel: ObservableObject {
         @Published var turn: TDDTicTacToe2App.Turn = .x
         @Published var gameBoard: [TTTBox.ViewModel]?
-
+        @Published var alertToShow: Alert.ViewModel?
+        
         init(turn: TDDTicTacToe2App.Turn = .x, gameBoard: [TTTBox.ViewModel]? = nil) {
             self.turn = turn
             self.gameBoard = gameBoard
@@ -24,7 +25,19 @@ extension TTTBoard {
         }
         
         func boxTapped() {
+            guard let gameBoard = gameBoard else { return }
+            
             turn = (turn == .x ? .o : .x)
+            let foo = isWinner(board: gameBoard)
+            
+            if !foo.isEmpty {
+                self.alertToShow = Alert.ViewModel(
+                    title: "\(foo) WINS!",
+                    message: "\(foo) won the game!",
+                    buttonText: "Play Again",
+                    buttonAction: resetGameBoard
+                )
+            }
         }
 
         func resetGameBoard() {
