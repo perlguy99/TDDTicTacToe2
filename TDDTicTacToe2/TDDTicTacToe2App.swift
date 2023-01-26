@@ -26,9 +26,9 @@ extension TDDTicTacToe2App {
         var text: String {
             switch self {
                 case .x:
-                    return "X"
+                    return "X's Turn"
                 case .o:
-                    return "O"
+                    return "O's Turn"
             }
         }
     }

@@ -15,14 +15,19 @@ struct TTTBox: View {
         VStack {
             Text(viewModel.value.rawValue)
                 .frame(width: 100.0, height: 100.0)
-                .background(Color.indigo)
+                .background(Color.mint)
                 .cornerRadius(8)
                 .font(.system(size: 72))
         }
         .onTapGesture {
-            viewModel.boxTapped()
+            onTapGesture()
+//            viewModel.boxTapped()
         }
         .onReceive(inspection.notice) { self.inspection.visit(self, $0) } // 2 of 2 for ViewInspector
+    }
+    
+    func onTapGesture() {
+        viewModel.boxTapped()
     }
 }
 
