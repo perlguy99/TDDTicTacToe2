@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ViewInspectorTest: View {
     @State var flag: Bool = false
-//    internal let inspection = Inspection<Self>()
+    internal let inspection = Inspection<Self>()
     
     var body: some View {
         Button(action: {
             self.flag.toggle()
         }, label: { Text(flag ? "True" : "False") })
-//        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
+        .onReceive(inspection.notice) { self.inspection.visit(self, $0) }
     }
 }
 

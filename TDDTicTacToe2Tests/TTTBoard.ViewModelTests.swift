@@ -196,17 +196,6 @@ final class TTTBoardViewModelTests: XCTestCase {
     /// Step 1: Try to set things up using ViewInspector
     ///
 
-       // Go to TDD 18 instead of here.
-//    func testViewSideEffects() throws {
-//        let sut = TTTBoard(viewModel: .init())
-//
-//        try sut.inspect().findall(TTTBox.self)
-//
-//        print("\n-------------------------------------")
-//        print(sut)
-//        print("-------------------------------------\n")
-//    }
-    
     /// TDD 18
     /// Going to try to use the ViewInspector examples to try these tests...
     ///
@@ -267,16 +256,16 @@ final class TTTBoardViewModelTests: XCTestCase {
     // Played around with the code a little more and found a way to make this part work!
     
     // TDD 18.25
-//    func testViewInspectorTestButtonTogglesFlag() throws {
-//        let sut = ViewInspectorTest()
-//        let exp = sut.inspection.inspect { view in
-//            XCTAssertFalse(try view.actualView().flag)
-//            try view.button().tap()
-//            XCTAssertTrue(try view.actualView().flag)
-//        }
-//        ViewHosting.host(view: sut)
-//        wait(for: [exp], timeout: 0.2)
-//    }
+    func testViewInspectorTestButtonTogglesFlag() throws {
+        let sut = ViewInspectorTest()
+        let exp = sut.inspection.inspect { view in
+            XCTAssertFalse(try view.actualView().flag)
+            try view.button().tap()
+            XCTAssertTrue(try view.actualView().flag)
+        }
+        ViewHosting.host(view: sut)
+        wait(for: [exp], timeout: 0.2)
+    }
     
     // TDD 21
     // We now need a way to determine if someone won the game...
@@ -306,6 +295,8 @@ final class TTTBoardViewModelTests: XCTestCase {
         ]
     }
     
+    /// The next several tests throw a warning, so we will try an alternative
+    /// method below them.
     func testIsWinner_WinningCombo_X_Horizontal_Expect_True() throws {
         let tttBoardView = TTTBoard(viewModel: .init())
         
@@ -360,15 +351,13 @@ final class TTTBoardViewModelTests: XCTestCase {
         let board = createGameBoard(state0: .o, state4: .o, state8: .o)
         XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "O")
     }
+    /// END OF StateObject WARNINGS (should be)
 
     func testIsWinner_WinningCombo_O_Diagonal2_Expect_True() throws {
         let tttBoardView = TTTBoard(viewModel: .init())
 
-        // This would test just that the ViewModel can see that it is a winner
-//        let board = createGameBoard(state2: .o, state4: .o, state6: .o)
-//        XCTAssertEqual(tttBoardView.viewModel.isWinner(board: board), "O")
-
-        // This actually acts as a user tapping on the device
+        /// This actually acts as a user tapping on the device
+        /// The previous test didn't "tap" any boxes, it just setup the board directly upon instantiation.
         let expectation = tttBoardView.inspection.inspect { view in
             XCTAssertEqual(try view.actualView().viewModel.gameBoard?[0].value, .empty)
             try view.actualView().viewModel.gameBoard?[0].boxTapped() // X
