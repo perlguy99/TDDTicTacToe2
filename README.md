@@ -2,7 +2,7 @@
 
 ## Business Requirements
 
-    - ### Boxes ###
+### Boxes ###
         - Boxes can be "-", "X", or "O"
             - Starting here.
         
@@ -18,7 +18,7 @@
             
     
     
-    - ### Board ###
+### Board ###
         - Has a Board of 9 Boxes
             - Test #1 (TDD 8): testBoardContainsNineBoxes
         
